@@ -30,7 +30,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshComponent;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleDefaultsOnly)
 	UCameraComponent* Camera;
 
 protected:

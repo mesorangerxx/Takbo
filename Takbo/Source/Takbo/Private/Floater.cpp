@@ -14,7 +14,7 @@ AFloater::AFloater()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(FName("Camera"));
 	Camera->AttachTo(MeshComponent);
-	Camera->SetRelativeLocation(FVector(-300.f, 0.f, 300.f));
+	Camera->SetRelativeLocation(FVector(-450.f, 0.f, 600.f));
 	Camera->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
