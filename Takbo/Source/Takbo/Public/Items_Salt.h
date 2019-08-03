@@ -23,6 +23,8 @@ public:
 	/** This sets the item's mass*/
 	void SetMass();
 
+	void SetScale();
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

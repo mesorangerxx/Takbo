@@ -24,6 +24,7 @@ void AItems_Salt::BeginPlay()
 	Super::BeginPlay();
 
 	SetMass();
+	SetScale();
 }
 
 int32 AItems_Salt::GetRandomMass()
@@ -34,6 +35,11 @@ int32 AItems_Salt::GetRandomMass()
 void AItems_Salt::SetMass()
 {
 	CurrentQuantity = FMath::Abs(FMath::RandRange(MinMass, MaxMass));
+}
+
+void AItems_Salt::SetScale()
+{
+	StaticMesh->GetRelativeTransform().SetScale3D(FVector(GetActorScale3D().X * CurrentQuantity, GetActorScale3D().Y * CurrentQuantity, GetActorScale3D().Z * CurrentQuantity));
 }
 
 // Called every frame
