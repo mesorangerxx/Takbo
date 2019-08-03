@@ -52,7 +52,10 @@ void AMainCharacter::MoveForward(float Value)
 {
 	if ((Controller != nullptr) && (Value != 0.f)) // This means if that there is a controller and Value is not 0.f then that means you could do something to move forward
 	{
-		FVector Direction = FVector(1.f, 0.f, 0.f);
+		// find out which way is forward
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+		FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
 	}
 }
@@ -61,7 +64,10 @@ void AMainCharacter::MoveRight(float Value)
 {
 	if ((Controller != nullptr) && (Value != 0.f)) // This means if that there is a controller and Value is not 0.f then that means you could do something to move forward
 	{
-		FVector Direction = FVector(0.f, 1.f, 0.f);
+		// find out which way is forward
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+		FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(Direction, Value);
 	}
 }
