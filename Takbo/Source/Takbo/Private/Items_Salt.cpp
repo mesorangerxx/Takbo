@@ -17,9 +17,18 @@ AItems_Salt::AItems_Salt()
 	Amplitude = 1.f;
 	Oscillations = 1.f;
 
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
-	RootComponent = StaticMesh;
+	TriggerBox = CreateDefaultSubobject<UBoxComponent>(FName("TriggerBox"));
+	RootComponent = TriggerBox;
 
+	TriggerBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	TriggerBox->SetCollisionObjectType(ECollisionChannel::ECC_WorldStatic);
+	TriggerBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	TriggerBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
+	TriggerBox->SetBoxExtent(FVector(62.f, 62.f, 32.f));
+
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
+	StaticMesh->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -29,6 +38,22 @@ void AItems_Salt::BeginPlay()
 
 	SetMass();
 	SetScale();
+
+	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &AItems_Salt::OnOverlapBegin);
+	TriggerBox->OnComponentEndOverlap.AddDynamic(this, &AItems_Salt::OnvOverlapEnd);
+}
+
+// Called every frame
+void AItems_Salt::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	StaticMesh->AddLocalRotation(FRotator(0.f, 1.f, 0.f));
+
+	/** Makes the item oscillate up and down*/
+	FVector NewLocation = GetActorLocation();
+	NewLocation.Z = NewLocation.Z + (Amplitude)* FMath::Cos((Oscillations)* RunningTime);
+	SetActorLocation(NewLocation);
+	RunningTime += DeltaTime;
 }
 
 int32 AItems_Salt::GetRandomMass()
@@ -46,16 +71,12 @@ void AItems_Salt::SetScale()
 	StaticMesh->GetRelativeTransform().SetScale3D(FVector(GetActorScale3D().X * CurrentQuantity, GetActorScale3D().Y * CurrentQuantity, GetActorScale3D().Z * CurrentQuantity));
 }
 
-// Called every frame
-void AItems_Salt::Tick(float DeltaTime)
+void AItems_Salt::OnOverlapBegin(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	Super::Tick(DeltaTime);
-	StaticMesh->AddLocalRotation(FRotator(0.f, 1.f, 0.f));
-
-	/** Makes the item oscillate up and down*/
-	FVector NewLocation = GetActorLocation();
-	NewLocation.Z = NewLocation.Z + (Amplitude)* FMath::Cos((Oscillations)* RunningTime);
-	SetActorLocation(NewLocation);
-	RunningTime += DeltaTime;
+	UE_LOG(LogTemp, Warning, TEXT("Overlap Begin."))
 }
 
+void AItems_Salt::OnvOverlapEnd(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Overlap End."))
+}

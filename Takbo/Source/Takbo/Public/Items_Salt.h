@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "PhysicsEngine/BodyInstance.h"
 #include "Items_Salt.generated.h"
 
@@ -17,6 +18,9 @@ public:
 	// Sets default values for this actor's properties
 	AItems_Salt();
 	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	/** This generates random quantities for each instance of this item*/
 	int32 GetRandomMass();
 	
@@ -25,8 +29,17 @@ public:
 
 	void SetScale();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	UFUNCTION()
+	void OnvOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	/** Overlap volume for functionality to be triggered */
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Floor Switch")
+	UBoxComponent* TriggerBox;
+
+	
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMesh;
