@@ -13,6 +13,10 @@ AItems_Salt::AItems_Salt()
 	MaxMass = 100;
 	MinMass = 0;
 
+	RunningTime = 0.f;
+	Amplitude = 1.f;
+	Oscillations = 1.f;
+
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	RootComponent = StaticMesh;
 
@@ -47,5 +51,11 @@ void AItems_Salt::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	StaticMesh->AddLocalRotation(FRotator(0.f, 1.f, 0.f));
+
+	/** Makes the item oscillate up and down*/
+	FVector NewLocation = GetActorLocation();
+	NewLocation.Z = NewLocation.Z + (Amplitude)* FMath::Cos((Oscillations)* RunningTime);
+	SetActorLocation(NewLocation);
+	RunningTime += DeltaTime;
 }
 

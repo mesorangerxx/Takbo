@@ -45,4 +45,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item Properties")
 	int32 MinMass;
+
+	UPROPERTY(EditAnywhere, Category = "Floater Variables | Wave Parameters")
+	float Amplitude;
+
+	UPROPERTY(EditAnywhere, Category = "Floater Variables | Wave Parameters")
+	float Oscillations;
+
+	float RunningTime;
 };
