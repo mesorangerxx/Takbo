@@ -16,6 +16,9 @@ AMainCharacter::AMainCharacter()
 	CameraBoom->TargetArmLength = 900.f;
 	CameraBoom->RelativeRotation = FRotator(-45.f, 0.f, 0.f);
 
+	// Set size for collision capsule
+	GetCapsuleComponent()->SetCapsuleSize(80.f, 65.f);
+
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(FName("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->RelativeLocation = FVector(106.f, 0.f, 106.f);

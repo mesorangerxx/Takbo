@@ -21,7 +21,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	/** This generates random quantities for each instance of this item*/
+	/** This returns the random quantities for each instance of this item*/
 	int32 GetRandomMass();
 	
 	/** This sets the item's mass*/

@@ -25,7 +25,7 @@ AItems_Salt::AItems_Salt()
 	TriggerBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	TriggerBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
-	TriggerBox->SetBoxExtent(FVector(62.f, 62.f, 32.f));
+	TriggerBox->SetBoxExtent(FVector(62.f, 62.f, 62.f));
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	StaticMesh->SetupAttachment(GetRootComponent());
@@ -68,12 +68,13 @@ void AItems_Salt::SetMass()
 
 void AItems_Salt::SetScale()
 {
-	StaticMesh->GetRelativeTransform().SetScale3D(FVector(GetActorScale3D().X * CurrentQuantity, GetActorScale3D().Y * CurrentQuantity, GetActorScale3D().Z * CurrentQuantity));
+	StaticMesh->SetWorldScale3D(FVector((CurrentQuantity/2.f), (CurrentQuantity / 2.f), (CurrentQuantity / 2.f)));
 }
 
 void AItems_Salt::OnOverlapBegin(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Overlap Begin."))
+	Destroy(); // Destroy this actor
 }
 
 void AItems_Salt::OnvOverlapEnd(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
